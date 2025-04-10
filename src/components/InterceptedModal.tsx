@@ -23,14 +23,14 @@ const InterceptedModal = ({ children }: { children: React.ReactNode }) => {
       fullScreen={isMobile}
       radius={15}
       scrollAreaComponent={ScrollArea.Autosize}
-      size="auto"
+      size='md'
       centered
       overlayProps={{
         backgroundOpacity: 0.55,
         blur: 7,
       }}
     >
-      <Modal.Body p={0} pt={10}>
+      <Modal.Body p={10} pt={10}>
         {children}
       </Modal.Body>
     </Modal>
