@@ -3,10 +3,19 @@ import { getCategories } from '@/app/(home)/categories/actions/categories';
 import CategoryList from './components/CategoryList';
 import Link from 'next/link';
 import { Button, Group, Stack } from '@mantine/core';
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
-export default async function CategoriesPage() {
-    // This will use the cache tag system for data fetching
-    const { data } = await getCategories();
+
+export default async function CategoriesPage(props: {
+    searchParams: SearchParams
+}) {
+    const searchParams = await props.searchParams
+    const page = searchParams.page
+
+    const { data } = await getCategories({
+        page: page ? Number(page) : 1,
+        limit: 3,
+    });
 
     const { categories = [], pagination } = data || {}
     return (

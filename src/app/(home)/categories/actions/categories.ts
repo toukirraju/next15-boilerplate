@@ -23,8 +23,26 @@ export type CategoryResponse = {
     };
 };
 
-export async function getCategories() {
-    return fetchData<CategoryResponse>('/categories', {}, [CATEGORY_CACHE_TAG]);
+export type QueryParams = {
+    page?: number;
+    limit?: number;
+};
+
+export async function getCategories(queryParams: QueryParams) {
+    // if queryParams is empty, return all categories
+    if (Object.keys(queryParams).length === 0) {
+        return fetchData<CategoryResponse>('/categories', {}, [CATEGORY_CACHE_TAG]);
+    }
+    // if queryParams is not empty, return paginated categories
+    const { page, limit } = queryParams;
+    const params = new URLSearchParams();
+    if (page) {
+        params.append('page', page.toString());
+    }
+    if (limit) {
+        params.append('limit', limit.toString());
+    }
+    return fetchData<CategoryResponse>(`/categories?${params.toString()}`, {}, [CATEGORY_CACHE_TAG]);
 }
 
 export async function getCategory(id: string) {

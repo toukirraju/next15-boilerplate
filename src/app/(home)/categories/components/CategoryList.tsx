@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
 import { Category, CategoryResponse, deleteCategory } from '../actions/categories';
 import { ColumnConfig, DynamicList, Icon } from '@/components';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const columns = [
     {
@@ -73,7 +73,10 @@ const columns = [
 ] as ColumnConfig[];
 
 const CategoryList = (categoryResponse: CategoryResponse) => {
-    const [page, setPage] = useState(1);
+    const searchParams = useSearchParams()
+
+    const pramPageNumber = searchParams.get('page')
+    const [page, setPage] = useState(pramPageNumber ? Number(pramPageNumber) : 1);
     const router = useRouter();
 
     const { categories, pagination } = categoryResponse || {};
@@ -133,7 +136,11 @@ const CategoryList = (categoryResponse: CategoryResponse) => {
                 <Pagination
                     total={pagination.totalPages}
                     value={page}
-                    onChange={setPage}
+                    onChange={(page) => {
+                        setPage(page);
+                        router.push(`/categories?page=${page}`);
+                    }
+                    }
                     size="sm"
                     radius="md"
                 />
