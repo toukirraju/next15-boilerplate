@@ -1,21 +1,36 @@
 'use client';
 import { Modal, ScrollArea } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 const InterceptedModal = ({ children }: { children: React.ReactNode }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
+  const pathname = usePathname();
   const isMobile = useMediaQuery('(max-width: 480px)');
+
+  // Store the initial path when modal opens
+  const initialPath = useRef(pathname);
 
   const handleModalClose = () => {
     close();
     router.back();
   };
+
   useEffect(() => {
     open();
+    // Update the initial path when modal opens
+    initialPath.current = pathname;
   }, []);
+
+  useEffect(() => {
+    // Close the modal if the path changes from the initial path
+    if (opened && pathname !== initialPath.current) {
+      close();
+    }
+  }, [pathname, opened, close]);
+
   return (
     <Modal
       opened={opened}
