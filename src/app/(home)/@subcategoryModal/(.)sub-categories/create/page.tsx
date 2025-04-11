@@ -4,7 +4,7 @@ import { InterceptedModal } from '@/components';
 import React from 'react';
 
 const InterceptedCreateSubCategoryPage = async () => {
-  const { data } = await getCategories();
+  const { data } = await getCategories({});
 
   const { categories = [], pagination } = data || {};
   return (

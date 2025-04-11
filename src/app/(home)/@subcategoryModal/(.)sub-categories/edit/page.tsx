@@ -1,6 +1,7 @@
+import { getCategory } from '@/app/(home)/categories/actions/categories';
+import CategoryFormControl from '@/app/(home)/categories/components/CategoryFormControl';
+import { InterceptedModal } from '@/components';
 import React from 'react';
-import { getCategory } from '../../categories/actions/categories';
-import CategoryFormControl from '../../categories/components/CategoryFormControl';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -10,9 +11,9 @@ const EditCategory = async (props: { searchParams: SearchParams }) => {
   const { data: category } = await getCategory(categoriId as string);
 
   return (
-    <div>
+    <InterceptedModal>
       <CategoryFormControl initialValues={category} />
-    </div>
+    </InterceptedModal>
   );
 };
 
