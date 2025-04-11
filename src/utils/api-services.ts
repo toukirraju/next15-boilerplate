@@ -3,6 +3,8 @@
 import { revalidateTag } from 'next/cache';
 import { fetchWithAuth, handleApiResponse } from './fetch-services';
 import { ApiError, ErrorDetails } from './errors';
+import { redirect } from 'next/navigation';
+import { clearAuthCookies } from './cookie-services';
 
 type ResponseType<T> = {
     success: boolean;
@@ -83,6 +85,13 @@ export async function createData<T>(
         body: JSON.stringify(data),
     });
 
+
+    // check if the result is an error with a redirect
+    if (!result.success && result.error?.status === 401 && result.error.details?.redirectTo) {
+        await clearAuthCookies()
+        redirect(result.error.details.redirectTo);
+    }
+
     // Only invalidate cache tags if the request was successful
     if (result.success && invalidateTags && invalidateTags.length > 0) {
         invalidateTags.forEach(tag => revalidateTag(tag));
@@ -105,6 +114,12 @@ export async function updateData<T>(
         body: JSON.stringify(data),
     });
 
+    // check if the result is an error with a redirect
+    if (!result.success && result.error?.status === 401 && result.error.details?.redirectTo) {
+        await clearAuthCookies()
+        redirect(result.error.details.redirectTo);
+    }
+
     // Invalidate cache tags if provided
     if (invalidateTags && invalidateTags.length > 0) {
         invalidateTags.forEach(tag => revalidateTag(tag));
@@ -117,9 +132,15 @@ export async function deleteData(
     endpoint: string,
     invalidateTags?: string[]
 ): Promise<void> {
-    await fetchData(endpoint, {
+    const result = await fetchData(endpoint, {
         method: 'DELETE',
     });
+
+    // check if the result is an error with a redirect
+    if (!result.success && result.error?.status === 401 && result.error.details?.redirectTo) {
+        await clearAuthCookies()
+        redirect(result.error.details.redirectTo);
+    }
 
     // Invalidate cache tags if provided
     if (invalidateTags && invalidateTags.length > 0) {
