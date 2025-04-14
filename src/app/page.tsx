@@ -1,103 +1,207 @@
-import Image from "next/image";
+'use client';
+
+const categories = [
+  {
+    id: 1,
+    name: 'Electronics',
+    image: 'https://example.com/electronics.jpg',
+    description: 'Devices and gadgets',
+    icon: 'https://example.com/electronics-icon.png',
+    parentIds: null,
+    slug: 'electronics',
+    isBrand: false
+  },
+  {
+    id: 2,
+    name: 'Fashion',
+    image: 'https://example.com/fashion.jpg',
+    description: 'Clothing and accessories',
+    icon: 'https://example.com/fashion-icon.png',
+    parentIds: null,
+    slug: 'fashion',
+    isBrand: false
+  },
+  {
+    id: 3,
+    name: 'Home & Garden',
+    image: 'https://example.com/home-garden.jpg',
+    description: 'Furniture and decor',
+    icon: 'https://example.com/home-garden-icon.png',
+    parentIds: null,
+    slug: 'home-and-garden',
+    isBrand: false
+  },
+  {
+    id: 4,
+    name: 'Sports & Outdoors',
+    image: 'https://example.com/sports-outdoors.jpg',
+    description: 'Sporting goods and outdoor gear',
+    icon: 'https://example.com/sports-outdoors-icon.png',
+    parentIds: null,
+    slug: 'sports-and-outdoors',
+    isBrand: false
+  },
+  {
+    id: 5,
+    name: 'Mobile Phones',
+    image: 'https://example.com/mobile-phones.jpg',
+    description: 'Smartphones and accessories',
+    icon: 'https://example.com/mobile-phones-icon.png',
+    parentIds: [1],
+    slug: 'mobile-phones',
+    isBrand: false
+  },
+  {
+    id: 6,
+    name: 'Laptops',
+    image: 'https://example.com/laptops.jpg',
+    description: 'Portable computers',
+    icon: 'https://example.com/laptops-icon.png',
+    parentIds: [1],
+    slug: 'laptops',
+    isBrand: false
+  },
+  {
+    id: 7,
+    name: 'Samsung',
+    image: 'https://example.com/samsung.jpg',
+    description: 'Samsung products',
+    icon: 'https://example.com/samsung-icon.png',
+    parentIds: [5, 6],
+    slug: 'samsung',
+    isBrand: true
+  },
+  {
+    id: 8,
+    name: 'Apple',
+    image: 'https://example.com/apple.jpg',
+    description: 'Apple products',
+    icon: 'https://example.com/apple-icon.png',
+    parentIds: [5],
+    slug: 'apple',
+    isBrand: true
+  },
+  {
+    id: 9,
+    name: 'Nike',
+    image: 'https://example.com/nike.jpg',
+    description: 'Nike products',
+    icon: 'https://example.com/nike-icon.png',
+    parentIds: [2],
+    slug: 'nike',
+    isBrand: true
+  },
+  {
+    id: 10,
+    name: 'Adidas',
+    image: 'https://example.com/adidas.jpg',
+    description: 'Adidas products',
+    icon: 'https://example.com/adidas-icon.png',
+    parentIds: [2],
+    slug: 'adidas',
+    isBrand: true
+  }
+]
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  interface Category {
+    id: number;
+    name: string;
+    image: string;
+    description: string;
+    icon: string;
+    parentIds: number[] | null;
+    slug: string;
+    isBrand: boolean;
+    children?: Category[];
+  }
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  class CategoryManager {
+    private categories: Category[];
+    public tree: Category[];
+    public brands: Category[];
+
+    constructor(categories: Category[]) {
+      this.categories = categories;
+      this.tree = this.buildTree();
+      this.brands = this.findBrands();
+    }
+
+    private buildTree(): Category[] {
+      const map = new Map<number, Category>(
+        this.categories.map(c => [c.id, { ...c, children: [] }])
+      );
+      const tree: Category[] = [];
+
+      this.categories.forEach(c => {
+        if (!c.parentIds) {
+          tree.push(map.get(c.id)!);
+        } else {
+          c.parentIds.forEach(pid => {
+            const parent = map.get(pid);
+            if (parent && !parent.children!.some(child => child.id === c.id)) {
+              parent.children!.push(map.get(c.id)!);
+            }
+          });
+        }
+      });
+
+      return tree;
+    }
+
+    private findBrands(): Category[] {
+      return this.categories.filter(category => category.isBrand);
+    }
+
+    public getBrandsByParent(parentId: number): Category[] {
+      const descendantIds = new Set<number>();
+
+      const collectDescendantIds = (category: Category) => {
+        category.children?.forEach(child => {
+          descendantIds.add(child.id);
+          collectDescendantIds(child);
+        });
+      };
+
+      const parent = this.tree.find(c => c.id === parentId);
+      if (parent) {
+        collectDescendantIds(parent);
+      }
+
+      return this.brands.filter(brand =>
+        brand.parentIds?.some(pid => descendantIds.has(pid) || pid === parentId)
+      );
+    }
+
+    public getCategoryPath(categoryId: number): Category[][] {
+      const paths: Category[][] = [];
+      const category = this.categories.find(c => c.id === categoryId);
+      if (!category) return [];
+
+      const buildPath = (node: Category, currentPath: Category[]) => {
+        if (node.id === categoryId) {
+          paths.push([...currentPath, node]);
+          return;
+        }
+
+        node.children?.forEach(child => {
+          buildPath(child, [...currentPath, node]);
+        });
+      };
+
+      this.tree.forEach(root => buildPath(root, []));
+      return paths;
+    }
+  }
+
+  // Usage example
+  const manager = new CategoryManager(categories);
+  console.log('Category Tree:', manager.tree);
+  console.log('All Brands:', manager.brands);
+  console.log('Electronics Brands:', manager.getBrandsByParent(1));
+  console.log('Paths to Samsung:', manager.getCategoryPath(7));
+  return (
+    <>
+    </>
   );
 }
