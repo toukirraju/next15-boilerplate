@@ -1,5 +1,6 @@
-import { getCategory } from '@/app/(home)/categories/actions/categories';
-import CategoryFormControl from '@/app/(home)/categories/components/CategoryFormControl';
+import { getCategories } from '@/app/(home)/categories/actions/categories';
+import { getSubCategory } from '@/app/(home)/sub-categories/actions/sub-categories';
+import SubCategoryFormControl from '@/app/(home)/sub-categories/components/SubCategoryFormControl';
 import { InterceptedModal } from '@/components';
 import React from 'react';
 
@@ -7,12 +8,20 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const EditCategory = async (props: { searchParams: SearchParams }) => {
   const searchParams = await props.searchParams;
-  const categoriId = searchParams.categoriId;
-  const { data: category } = await getCategory(categoriId as string);
+  const subCategoriId = searchParams.subCategoriId;
+  const page = searchParams.page;
+  const { data } = await getCategories({});
+
+  const { categories = [], pagination } = data || {};
+  const { data: category } = await getSubCategory(subCategoriId as string);
 
   return (
-    <InterceptedModal>
-      <CategoryFormControl initialValues={category} />
+    <InterceptedModal modalPath='/sub-categories/edit'>
+      {' '}
+      <SubCategoryFormControl
+        initialValues={category}
+        categories={categories}
+      />
     </InterceptedModal>
   );
 };

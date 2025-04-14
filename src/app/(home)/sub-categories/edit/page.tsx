@@ -1,17 +1,27 @@
 import React from 'react';
-import { getCategory } from '../../categories/actions/categories';
-import CategoryFormControl from '../../categories/components/CategoryFormControl';
+import { getCategories } from '../../categories/actions/categories';
+import { getSubCategory } from '../actions/sub-categories';
+import SubCategoryFormControl from '../components/SubCategoryFormControl';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const EditCategory = async (props: { searchParams: SearchParams }) => {
   const searchParams = await props.searchParams;
-  const categoriId = searchParams.categoriId;
-  const { data: category } = await getCategory(categoriId as string);
+  const subCategoriId = searchParams.subCategoriId;
+  const page = searchParams.page;
+  const { data } = await getCategories({});
+
+  const { categories = [], pagination } = data || {};
+
+  const { data: subCategory } = await getSubCategory(subCategoriId as string);
+  console.log(data, 'sub-cat');
 
   return (
     <div>
-      <CategoryFormControl initialValues={category} />
+      <SubCategoryFormControl
+        initialValues={subCategory}
+        categories={categories}
+      />
     </div>
   );
 };
