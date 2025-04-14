@@ -4,14 +4,16 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-const InterceptedModal = ({ children }: { children: React.ReactNode }) => {
+interface InterceptedModalProps {
+  children: React.ReactNode;
+  modalPath: string;
+}
+
+const InterceptedModal = ({ children, modalPath }: InterceptedModalProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
   const pathname = usePathname();
   const isMobile = useMediaQuery('(max-width: 480px)');
-
-  // Store the initial path when modal opens
-  const initialPath = useRef(pathname);
 
   const handleModalClose = () => {
     close();
@@ -19,17 +21,12 @@ const InterceptedModal = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    open();
-    // Update the initial path when modal opens
-    initialPath.current = pathname;
-  }, []);
-
-  useEffect(() => {
-    // Close the modal if the path changes from the initial path
-    if (opened && pathname !== initialPath.current) {
+    if (pathname === modalPath) {
+      open();
+    } else {
       close();
     }
-  }, [pathname, opened, close]);
+  }, [pathname]); // 🔁 listens for every change in pathname
 
   return (
     <Modal

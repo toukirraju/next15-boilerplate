@@ -6,7 +6,7 @@ import CategoryFormControl from '@/app/(home)/categories/components/CategoryForm
 const InterceptedCreateCategoryPage = () => {
   return (
     <div>
-      <InterceptedModal>
+      <InterceptedModal modalPath='/categories/create'>
         <CategoryFormControl />
       </InterceptedModal>
     </div>

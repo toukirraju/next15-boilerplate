@@ -9,7 +9,7 @@ const InterceptedCreateSubCategoryPage = async () => {
   const { categories = [], pagination } = data || {};
   return (
     <div>
-      <InterceptedModal>
+      <InterceptedModal modalPath='/sub-categories/create'>
         {' '}
         <SubCategoryFormControl categories={categories} />
       </InterceptedModal>

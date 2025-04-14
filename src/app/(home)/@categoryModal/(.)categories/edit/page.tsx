@@ -14,7 +14,7 @@ const InterceptedEditCategory = async (props: {
 
   return (
     <div>
-      <InterceptedModal>
+      <InterceptedModal modalPath='/categories/edit'>
         <CategoryFormControl initialValues={category} />
       </InterceptedModal>
     </div>
