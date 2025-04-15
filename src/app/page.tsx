@@ -9,7 +9,7 @@ const categories = [
     icon: 'https://example.com/electronics-icon.png',
     parentIds: null,
     slug: 'electronics',
-    isBrand: false
+    isBrand: false,
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const categories = [
     icon: 'https://example.com/fashion-icon.png',
     parentIds: null,
     slug: 'fashion',
-    isBrand: false
+    isBrand: false,
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const categories = [
     icon: 'https://example.com/home-garden-icon.png',
     parentIds: null,
     slug: 'home-and-garden',
-    isBrand: false
+    isBrand: false,
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const categories = [
     icon: 'https://example.com/sports-outdoors-icon.png',
     parentIds: null,
     slug: 'sports-and-outdoors',
-    isBrand: false
+    isBrand: false,
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const categories = [
     icon: 'https://example.com/mobile-phones-icon.png',
     parentIds: [1],
     slug: 'mobile-phones',
-    isBrand: false
+    isBrand: false,
   },
   {
     id: 6,
@@ -59,7 +59,7 @@ const categories = [
     icon: 'https://example.com/laptops-icon.png',
     parentIds: [1],
     slug: 'laptops',
-    isBrand: false
+    isBrand: false,
   },
   {
     id: 7,
@@ -69,7 +69,7 @@ const categories = [
     icon: 'https://example.com/samsung-icon.png',
     parentIds: [5, 6],
     slug: 'samsung',
-    isBrand: true
+    isBrand: true,
   },
   {
     id: 8,
@@ -79,7 +79,7 @@ const categories = [
     icon: 'https://example.com/apple-icon.png',
     parentIds: [5],
     slug: 'apple',
-    isBrand: true
+    isBrand: true,
   },
   {
     id: 9,
@@ -89,7 +89,7 @@ const categories = [
     icon: 'https://example.com/nike-icon.png',
     parentIds: [2],
     slug: 'nike',
-    isBrand: true
+    isBrand: true,
   },
   {
     id: 10,
@@ -99,9 +99,9 @@ const categories = [
     icon: 'https://example.com/adidas-icon.png',
     parentIds: [2],
     slug: 'adidas',
-    isBrand: true
-  }
-]
+    isBrand: true,
+  },
+];
 
 export default function Home() {
   interface Category {
@@ -129,17 +129,20 @@ export default function Home() {
 
     private buildTree(): Category[] {
       const map = new Map<number, Category>(
-        this.categories.map(c => [c.id, { ...c, children: [] }])
+        this.categories.map((c) => [c.id, { ...c, children: [] }])
       );
       const tree: Category[] = [];
 
-      this.categories.forEach(c => {
+      this.categories.forEach((c) => {
         if (!c.parentIds) {
           tree.push(map.get(c.id)!);
         } else {
-          c.parentIds.forEach(pid => {
+          c.parentIds.forEach((pid) => {
             const parent = map.get(pid);
-            if (parent && !parent.children!.some(child => child.id === c.id)) {
+            if (
+              parent &&
+              !parent.children!.some((child) => child.id === c.id)
+            ) {
               parent.children!.push(map.get(c.id)!);
             }
           });
@@ -150,32 +153,34 @@ export default function Home() {
     }
 
     private findBrands(): Category[] {
-      return this.categories.filter(category => category.isBrand);
+      return this.categories.filter((category) => category.isBrand);
     }
 
     public getBrandsByParent(parentId: number): Category[] {
       const descendantIds = new Set<number>();
 
       const collectDescendantIds = (category: Category) => {
-        category.children?.forEach(child => {
+        category.children?.forEach((child) => {
           descendantIds.add(child.id);
           collectDescendantIds(child);
         });
       };
 
-      const parent = this.tree.find(c => c.id === parentId);
+      const parent = this.tree.find((c) => c.id === parentId);
       if (parent) {
         collectDescendantIds(parent);
       }
 
-      return this.brands.filter(brand =>
-        brand.parentIds?.some(pid => descendantIds.has(pid) || pid === parentId)
+      return this.brands.filter((brand) =>
+        brand.parentIds?.some(
+          (pid) => descendantIds.has(pid) || pid === parentId
+        )
       );
     }
 
     public getCategoryPath(categoryId: number): Category[][] {
       const paths: Category[][] = [];
-      const category = this.categories.find(c => c.id === categoryId);
+      const category = this.categories.find((c) => c.id === categoryId);
       if (!category) return [];
 
       const buildPath = (node: Category, currentPath: Category[]) => {
@@ -184,12 +189,12 @@ export default function Home() {
           return;
         }
 
-        node.children?.forEach(child => {
+        node.children?.forEach((child) => {
           buildPath(child, [...currentPath, node]);
         });
       };
 
-      this.tree.forEach(root => buildPath(root, []));
+      this.tree.forEach((root) => buildPath(root, []));
       return paths;
     }
   }
@@ -200,8 +205,5 @@ export default function Home() {
   console.log('All Brands:', manager.brands);
   console.log('Electronics Brands:', manager.getBrandsByParent(1));
   console.log('Paths to Samsung:', manager.getCategoryPath(7));
-  return (
-    <>
-    </>
-  );
+  return <></>;
 }

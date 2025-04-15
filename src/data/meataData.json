@@ -1,0 +1,44 @@
+{
+  "/": {
+    "title": "Home Page",
+    "description": "Welcome to the next js Boiler template",
+    "image": "https://payloadcms.com/api/og?topic=admin&title=The%20Admin%20Panel"
+  },
+  "/about": {
+    "title": "About Us",
+    "description": "Learn more about our team."
+  },
+  "/contact": {
+    "title": "Contact",
+    "description": "Get in touch with us."
+  },
+  "/categories": {
+    "title": "Categories",
+    "description": "Learn about all the different product categories.",
+    "image": "https://payloadcms.com/api/og?topic=admin&title=The%20Admin%20Panel"
+  },
+  "/categories/create": {
+    "title": "Create Category",
+    "description": "Create a new category"
+  },
+
+  "/categories/edit": {
+    "title": "Edit Category",
+    "description": "Edit new category"
+  },
+
+  "/sub-categories": {
+    "title": "Sub-categories",
+    "description": "Learn about all the sub-categories ."
+  },
+
+  "/sub-categories/create": {
+    "title": " Create Sub-categories",
+    "description": "Create sub-category."
+  },
+
+  "/sub-categories/edit": {
+    "title": " Edit Sub-categories",
+    "description": "Edit sub-category."
+  }
+}
